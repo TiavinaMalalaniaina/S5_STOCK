@@ -1,0 +1,38 @@
+[
+    {   
+        "articleCode":"R",
+        "article":"Riz",
+        "unity":"Kg",
+        "amount":20000,
+        "initialStock":20,
+        "finalStock":20,
+        "entry":50,
+        "output":20,
+        "store":"Magasin m1",
+        "store_code":"M1"
+    },
+    {   
+        "articleCode":"R",
+        "article":"Riz",
+        "unity":"Kg",
+        "amount":20000,
+        "initialStock":20,
+        "finalStock":20,
+        "entry":50,
+        "output":20,
+        "store":"Magasin m1",
+        "store_code":"M1"
+    },
+    {   
+        "articleCode":"R",
+        "article":"Riz",
+        "unity":"Kg",
+        "amount":20000,
+        "initialStock":20,
+        "finalStock":20,
+        "entry":50,
+        "output":20,
+        "store":"Magasin m1",
+        "store_code":"M1"
+    }
+]
