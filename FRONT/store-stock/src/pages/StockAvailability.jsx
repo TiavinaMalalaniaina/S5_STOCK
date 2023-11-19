@@ -6,6 +6,7 @@ import API_CONFIG from "../config/apiconfig";
 
 export default function StockAvailability() {
   const [data, setData] = useState([]);
+  const [data2, setData2 ] = useState([]);
   
   const handleInputChange = (e) => {
   };
@@ -33,6 +34,14 @@ export default function StockAvailability() {
       setData(res.data)
     })
     .catch((error) => console.log(error));
+
+    fetch(API_CONFIG.BASE_URL + API_CONFIG.STOCK_FINAL_API, requestOptions)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      setData2(res.data)
+    })
+    .catch((error) => console.log(error));
   }
 
   return (
@@ -41,6 +50,7 @@ export default function StockAvailability() {
         <CardTitle start={data.start} end={data.end}/>
         <div className="col-8">
           <CardStock data={data} />
+          <CardStock data={data2} />
         </div>
         <div className="col-4">
           <CardFilterStock updateFilters={updateFilters} handleInputChange={handleInputChange}/>

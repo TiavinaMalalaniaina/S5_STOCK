@@ -1,6 +1,6 @@
 export default function TableHeader() {
     const headers = [
-        "Article", "Unité", "Montant", "Quantité initial", "Reste", "Entrée", "Sortie", "Magasin"
+        "Article", "Unité", "Montant", "Quantité initial", "Reste", "Entrée", "Sortie", "CUMP","Magasin"
     ];
     
     return (

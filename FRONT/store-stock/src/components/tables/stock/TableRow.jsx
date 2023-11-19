@@ -3,12 +3,13 @@ export default function TableRow({item}) {
         <>
             <tr>
                 <td>{item.articleName}</td>
-                <td></td>
-                <td>{item.amountFinal}</td>
-                <td>{item.quantityInit}</td>
-                <td>{item.quantityFinal}</td>
-                <td>{item.quantityEntry}</td>
-                <td>{item.quantityOutput}</td>
+                <td>{item.unity}</td>
+                <td>{item.amountFinal.toLocaleString()}</td>
+                <td>{item.quantityInit.toLocaleString()}</td>
+                <td>{item.quantityFinal.toLocaleString()}</td>
+                <td>{item.quantityEntry.toLocaleString()}</td>
+                <td>{item.quantityOutput.toLocaleString()}</td>
+                <td>{item.cump.toLocaleString()}</td>
                 <td>{item.storeName}</td>
             </tr>
         </>

@@ -4,13 +4,6 @@ import API_CONFIG from './../../../config/apiconfig';
 
 
 export default function FormEntry() {
-    const [postData, setPostData] = useState({
-        articleId: '',
-        dateEntry: new Date().toISOString().split('T')[0],
-        storeId: '',
-        quantity: '',
-        unitPrice: ''
-    });
     const [articles, setArticles] = useState([]);
     const [stores, setStores] = useState([]);
     const elements = [
@@ -19,40 +12,31 @@ export default function FormEntry() {
             "label":"Article", 
             "type":"select",
             "values":articles,
-            "value":postData.articleId,
         },
         {
             "name":"dateEntry",
             "label":"Date",
             "type":"date",
-            "value":postData.dateEntry
+            "value": new Date().toISOString().split('T')[0]
         },
         {
             "name":"storeId",
             "label":"Magasin",
             "type":"select",
             "values":stores,
-            "value":postData.storeId
         },
         {
             "name":"quantity",
             "label":"Quantité",
             "type":"number",
-            "value":postData.quantity
         },
         {
             "name":"unitPrice",
             "label":"Prix unitaire",
             "type":"number",
-            "value":postData.unitPrice
         }
     ]
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPostData(prevData => ({
-            ...prevData,
-            [name]: value,
-        }));
     };
 
     useEffect(() => {
@@ -65,7 +49,7 @@ export default function FormEntry() {
     }, []);
 
     useEffect(() => {
-        fetch(API_CONFIG.BASE_URL + API_CONFIG.ARTICLES_API)
+        fetch(API_CONFIG.BASE_URL + API_CONFIG.ARTICLES_FINAL_API)
             .then(response => response.json())
             .then(response => {
                 setArticles(response.data)
@@ -73,17 +57,26 @@ export default function FormEntry() {
             .catch((error) => console.log(error));
     }, []);
 
+    const toJson = (formData) => {
+        const objet = {};
+        formData.forEach((valeur, clé) => {
+          objet[clé] = valeur;
+        });
+        const jsonData = JSON.stringify(objet);
+        return jsonData;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify(postData)
+            body: toJson(new FormData(e.target))
         }
         fetch(API_CONFIG.BASE_URL + API_CONFIG.ADD_ENTRY ,requestOptions)
             .then(response => response.json())
             .then(response => {
-                alert(response);
+                alert(response.data);
             })
             .catch((error) => console.log(error));
     }

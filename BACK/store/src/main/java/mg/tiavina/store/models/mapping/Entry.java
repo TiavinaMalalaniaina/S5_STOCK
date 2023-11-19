@@ -2,8 +2,12 @@ package mg.tiavina.store.models.mapping;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import static mg.tiavina.store.util.PostgreSQLConnection.getConnection;
 
 public class Entry implements Model<Entry> {
     int id;
@@ -27,8 +31,28 @@ public class Entry implements Model<Entry> {
 
     @Override
     public void save(Connection connection) throws SQLException{
-        // TODO Auto-generated method stub
-        
+        boolean wasConnected = true;
+        if (connection == null) {
+            wasConnected = false;
+            connection = getConnection();
+        } 
+        String sql = "INSERT INTO \"public\".entries ( id, date_entry, quantity, article_id, store_id, unit_price ) VALUES ( default, ?, ?, ?, ?, ? ) RETURNING id";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, this.getDateEntry());
+            stmt.setDouble(2, this.getQuantity());
+            stmt.setInt(3, this.getArticleId());
+            stmt.setInt(4, this.getStoreId());
+            stmt.setDouble(5, this.getUnitPrice());
+            System.out.println(stmt.toString());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                this.setId(rs.getInt("id"));
+            } 
+        }
+
+        if (!wasConnected) {
+            connection.close();
+        }
     }
 
     @Override

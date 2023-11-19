@@ -21,12 +21,13 @@ public class FStockBetween {
     String unity;
     String storeCode;
     String storeName;
-    double quantityInit;
-    double quantityFinal;
-    double quantityEntry;
-    double quantityOutput;
-    double amountInit;
-    double amountFinal;
+    double quantityInit = 0;
+    double quantityFinal = 0;
+    double quantityEntry = 0;
+    double quantityOutput = 0;
+    double amountInit = 0;
+    double amountFinal = 0;
+    double cump = 0;
 
     public List<FStockBetween> findOn(Date dateInit, Date dateFinal, int articleId, int storeId, Connection connection) throws SQLException {
         List<FStockBetween> models = new ArrayList<>();
@@ -38,10 +39,47 @@ public class FStockBetween {
         VArticle article = new VArticle().findByIdByViews(articleId, connection);
         VStore store = new VStore().findByIdByViews(storeId, connection);
         models = findOn(dateInit, dateFinal, article.getCode(), store.getCode(), connection);
+        for (FStockBetween model : models) {
+            model.setUnity(article.getUnity());
+        }
         if (!wasConnected) {
             connection.close();
         }
         return models;
+    }
+
+    public FStockBetween find(Date dateInit, Date dateFinal, int articleId, int storeId, Connection connection) throws SQLException {
+        List<FStockBetween> models = new ArrayList<>();
+        FStockBetween model_final = new FStockBetween();
+        boolean wasConnected = true;
+        if (connection == null) {
+            wasConnected = false;
+            connection = getConnection();
+        }
+        VArticle article = new VArticle().findByIdByViews(articleId, connection);
+        VStore store = new VStore().findByIdByViews(storeId, connection);
+        model_final.setArticleId(article.getId());
+        model_final.setArticleName(article.getName());
+        model_final.setArticleCode(article.getCode());
+        model_final.setStoreId(store.getId());
+        model_final.setStoreName(store.getName());
+        model_final.setStoreCode(store.getCode());
+        model_final.setUnity(article.getUnity());
+        models = findOn(dateInit, dateFinal, article.getCode(), store.getCode(), connection);
+        for (FStockBetween model : models) {
+            model_final.setAmountFinal(model_final.getAmountFinal() + model.getAmountFinal());
+            model_final.setAmountInit(model_final.getAmountInit() + model.getAmountInit());
+            model_final.setQuantityEntry(model_final.getQuantityEntry() + model.getQuantityEntry());
+            model_final.setQuantityOutput(model_final.getQuantityOutput() + model.getQuantityOutput());
+            model_final.setQuantityInit(model_final.getQuantityInit() + model.getQuantityInit());
+            model_final.setQuantityFinal(model_final.getQuantityFinal() + model.getQuantityFinal());
+            model.setUnity(article.getUnity());
+        }
+        model_final.setCump();
+        if (!wasConnected) {
+            connection.close();
+        }
+        return model_final;
     }
     
     public List<FStockBetween> findOn(Date dateInit, Date dateFinal, String articleCode, String storeCode, Connection connection) throws SQLException {
@@ -73,6 +111,7 @@ public class FStockBetween {
                 model.setQuantityOutput(rs.getDouble("quantity_output"));
                 model.setAmountInit(rs.getDouble("amount_init"));
                 model.setAmountFinal(rs.getDouble("amount_final"));
+                model.setCump();
                 models.add(model);
             }
         }
@@ -209,6 +248,22 @@ public class FStockBetween {
 
     public void setUnity(String unity) {
         this.unity = unity;
+    }
+
+    public double getCump() {
+        return cump;
+    }
+
+    public void setCump(double cump) {
+        this.cump = cump;
+    }
+
+    public void setCump() {
+        if (this.getQuantityFinal() != 0) {
+            this.setCump(this.getAmountFinal() / this.getQuantityFinal());
+        } else {
+            this.setCump(0);
+        }
     }
 
 
