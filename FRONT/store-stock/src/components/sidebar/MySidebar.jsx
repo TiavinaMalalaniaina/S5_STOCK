@@ -34,6 +34,11 @@ export default function MySidebar() {
                         Sortie
                     </MenuItem>
                 </Link>
+                <Link to="/request" style={ cssLink }>
+                    <MenuItem icon={<ReceiptOutlinedIcon />}>
+                        Demande
+                    </MenuItem>
+                </Link>
             </Menu>
         </Sidebar>
     )

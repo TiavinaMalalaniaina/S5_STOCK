@@ -6,6 +6,7 @@ import StockEntry from './pages/StockEntry';
 import StockOutput from './pages/StockOutput';
 import './styles/bootstrap/css/bootstrap.min.css';
 import './styles/css/App.css';
+import RequestOutput from './pages/RequestOutput';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path='/' element={<StockAvailability/>}/>
               <Route path='/entry' element={<StockEntry/>}/>
               <Route path='/output' element={<StockOutput/>}/>
+              <Route path='/request' element={<RequestOutput />}/>
             </Routes>
           </div>
         </div>

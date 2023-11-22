@@ -6,7 +6,9 @@ const API_CONFIG = {
     ARTICLES_FINAL_API: '/articles-fini',
     STORES_API: '/stores',
     ADD_ENTRY: '/add-entry',
-    ADD_OUTPUT: '/add-output'
+    ADD_OUTPUT: '/add-output',
+    ADD_REQUEST: '/add-request',
+    VALIDATE_REQUEST: '/validate-request'
 };
 
 

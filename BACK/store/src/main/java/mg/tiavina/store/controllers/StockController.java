@@ -21,7 +21,6 @@ public class StockController {
         System.out.println(filter.toString());
         MyJSON json = new MyJSON();
         try {
-            System.out.println("STOCKS");
             List<FStockBetween> models = new FStockBetween().findOn(filter.getStart(), filter.getEnd(), filter.getArticleId(), filter.getStoreId(), null);
             json.setData(models);
         } catch (Exception e) {

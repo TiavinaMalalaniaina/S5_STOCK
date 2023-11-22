@@ -2,7 +2,6 @@ package mg.tiavina.store.models.mapping;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 public interface Model<T> {
     

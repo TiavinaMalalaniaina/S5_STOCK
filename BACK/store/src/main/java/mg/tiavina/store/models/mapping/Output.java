@@ -5,9 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 import static mg.tiavina.store.util.PostgreSQLConnection.getConnection;
 

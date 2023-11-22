@@ -43,13 +43,10 @@ public class Stock {
             wasConnected = false;
             connection = getConnection();
         }
-        connection.setAutoCommit(false);
         try {
             this.findStock(output, connection);
             this.newOutput(output, connection, 0);
-            connection.commit();
         } catch (IndexOutOfBoundsException ex) {
-            connection.rollback();
             throw ex;//TODO change to quantityException
         } finally {
             if (!wasConnected) {

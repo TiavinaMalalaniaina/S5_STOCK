@@ -13,6 +13,7 @@ import mg.tiavina.store.models.mapping.ModelDate;
 import mg.tiavina.store.models.mapping.ModelView;
 import mg.tiavina.store.models.mapping.Output;
 import mg.tiavina.store.models.mapping.Store;
+import mg.tiavina.store.models.special.Stock;
 
 import static mg.tiavina.store.util.PostgreSQLConnection.getConnection;
 
@@ -31,6 +32,20 @@ public class VOutput extends Output implements ModelDate<VOutput>,ModelView<VOut
     String nameStore;
     Article article;
     Store store;
+
+    public void checkDateValidation(Connection connection) throws Exception {
+        //TODO: checker
+    }
+
+    public void checkQuantity(Connection connection) throws Exception {
+
+    }
+
+    public void validation(Connection connection) throws Exception {
+        checkDateValidation(connection);
+        checkQuantity(connection);
+        new Stock().newOutput(this, connection);
+    }
 
     public List<VOutput> findByEntryId(int entryId, Connection connection) throws SQLException {
         List<VOutput> models = new ArrayList<>();
