@@ -15,7 +15,7 @@ import static mg.tiavina.store.util.PostgreSQLConnection.getConnection;
  * 
  */
 public class Stock {
-    List<StockEntry> stockEntries;
+    List<StockEntry> stockEntries=new ArrayList<>() ;
 
     public List<StockEntry> findByArticleAndStore(int articleId, int storeId, Connection connection) throws SQLException{
         List<StockEntry> models = new ArrayList<>();
@@ -37,7 +37,7 @@ public class Stock {
         return this;
     }
 
-    public void newOutput(VOutput output, Connection connection) throws SQLException, QuantityException{
+    public void newOutput(VOutput output, Connection connection) throws Exception{
         boolean wasConnected = true;
         if (connection == null) {
             wasConnected = false;
@@ -46,8 +46,8 @@ public class Stock {
         try {
             this.findStock(output, connection);
             this.newOutput(output, connection, 0);
-        } catch (IndexOutOfBoundsException ex) {
-            throw ex;//TODO change to quantityException
+        } catch (Exception ex) {
+            throw new Exception("Quantité insuffisante");
         } finally {
             if (!wasConnected) {
                 connection.close();

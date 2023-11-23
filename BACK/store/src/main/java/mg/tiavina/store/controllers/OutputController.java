@@ -19,7 +19,7 @@ public class OutputController {
             new Stock().newOutput(output, null);
             System.out.println("DONE");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -28,7 +28,7 @@ public class OutputController {
         try {
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 

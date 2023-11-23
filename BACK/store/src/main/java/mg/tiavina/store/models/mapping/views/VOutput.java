@@ -1,5 +1,7 @@
 package mg.tiavina.store.models.mapping.views;
 
+import java.time.LocalDate;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.StatementEvent;
 
 import mg.tiavina.store.models.mapping.Article;
 import mg.tiavina.store.models.mapping.ModelDate;
@@ -33,17 +37,43 @@ public class VOutput extends Output implements ModelDate<VOutput>,ModelView<VOut
     Article article;
     Store store;
 
+    
+
+    @Override
+    public String toString() {
+        return "VOutput [quantity="+this.getQuantity()+", dateEntry=" + dateEntry + ", quantityEntry=" + quantityEntry + ", unitPrice=" + unitPrice
+                + ", articleId=" + articleId + ", storeId=" + storeId + ", codeArticle=" + codeArticle
+                + ", nameArticle=" + nameArticle + ", type=" + type + ", unityId=" + unityId + ", unity=" + unity
+                + ", codeStore=" + codeStore + ", nameStore=" + nameStore + ", article=" + article + ", store=" + store
+                + "]";
+    }
+
     public void checkDateValidation(Connection connection) throws Exception {
-        //TODO: checker
+        Date max = getMaxDate(connection);
+        System.out.println(max + " === " + this.getDateOutput() +" ==== "+ max.compareTo(this.getDateOutput()));
+        if (max.compareTo(this.getDateOutput())>0) {
+            throw new Exception("La date est antérieur à la validation");
+        }
     }
 
     public void checkQuantity(Connection connection) throws Exception {
+        new Stock().checkQuantity(this);
+    }
 
+    public Date getMaxDate(Connection connection) throws Exception {
+        String sql = String.format("SELECT COALESCE(max(date_output), '1970-01-01') date_output FROM v_outputs WHERE article_id=%s AND store_id=%s", this.getArticleId(), this.getStoreId());
+        System.out.println(sql);
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getDate("date_output");
+            }
+        }
+        return new Date(LocalDate.MIN.getLong(null));
     }
 
     public void validation(Connection connection) throws Exception {
         checkDateValidation(connection);
-        checkQuantity(connection);
         new Stock().newOutput(this, connection);
     }
 

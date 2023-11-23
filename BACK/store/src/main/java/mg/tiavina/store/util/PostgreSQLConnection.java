@@ -25,7 +25,7 @@ public class PostgreSQLConnection {
             }
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Erreur lors de la connexion à la base de données PostgreSQL");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }

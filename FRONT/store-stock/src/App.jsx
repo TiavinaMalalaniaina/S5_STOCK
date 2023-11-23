@@ -7,6 +7,7 @@ import StockOutput from './pages/StockOutput';
 import './styles/bootstrap/css/bootstrap.min.css';
 import './styles/css/App.css';
 import RequestOutput from './pages/RequestOutput';
+import Validate from './pages/Validate';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path='/entry' element={<StockEntry/>}/>
               <Route path='/output' element={<StockOutput/>}/>
               <Route path='/request' element={<RequestOutput />}/>
+              <Route path='/validate' element={<Validate />}/>
             </Routes>
           </div>
         </div>

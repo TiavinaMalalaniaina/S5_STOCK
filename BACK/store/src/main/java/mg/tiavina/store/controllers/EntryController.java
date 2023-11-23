@@ -14,7 +14,7 @@ public class EntryController {
         try {
             entry.save(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

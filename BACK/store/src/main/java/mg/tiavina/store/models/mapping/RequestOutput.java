@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.apache.catalina.connector.Connector;
 
+import mg.tiavina.store.models.exception.QuantityException;
 import mg.tiavina.store.models.mapping.views.VOutput;
 
 import static mg.tiavina.store.util.PostgreSQLConnection.getConnection;
@@ -21,39 +22,8 @@ public class RequestOutput implements Model<RequestOutput> {
     Date validationDate;
     int state;
 
-    public void validate(Connection connection) throws Exception {
-        connection.setAutoCommit(false);
-        try {
-            VOutput output = new VOutput();
-            output.setArticleId(this.getArticleId());
-            output.setStoreId(this.getStoreId());
-            output.setDateOutput(this.getValidationDate());
-            output.validation(connection);
-            this.updateValidation(connection);
-            connection.commit();
-        } catch (Exception ex) {
-            connection.rollback();
-            throw ex;
-        }
-    }
 
-    // public void validate(Date validationDate, Connection connection) throws SQLException {
-    //     connection.setAutoCommit(false);
-    //     try {
-    //         Output output = new Output();
-    //         output.setDateOutput(this.getRequestDate());
-    //         output.setQuantity(this.getQuantity());
-    //         output.setArticleId(this.getArticleId());
-    //         output.setStoreId(this.getStoreId());
-    //         this.setValidationDate(validationDate);
-    //         this.setState(20);
-    //         this.updateValidation(connection);
-    //         connection.commit();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         connection.rollback();
-    //     }
-    // }
+   
 
     @Override
     public void delete(int id, Connection connection) throws SQLException {
@@ -67,15 +37,12 @@ public class RequestOutput implements Model<RequestOutput> {
             wasConnected = false;
             connection = getConnection();
         } 
-        String sql = "INSERT INTO \"public\".request_outputs ( id, request_date, quantity, article_id, store_id, validation_date, \"state\") VALUES ( default, ?, ?, ?, ?, ?, default ) RETURNING id";
+        String sql = "INSERT INTO \"public\".request_outputs ( id, quantity, article_id, store_id, \"state\") VALUES ( default, ?, ?, ?, default ) RETURNING id";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             System.out.println(stmt.toString());
-            stmt.executeUpdate();
-            stmt.setDate(1, this.getRequestDate());
-            stmt.setDouble(2, this.getQuantity());
-            stmt.setInt(3, this.getArticleId());
-            stmt.setInt(4, this.getStoreId());
-            stmt.setDate(5, null);
+            stmt.setDouble(1, this.getQuantity());
+            stmt.setInt(2, this.getArticleId());
+            stmt.setInt(3, this.getStoreId());
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 this.setId(rs.getInt("id"));
@@ -102,6 +69,9 @@ public class RequestOutput implements Model<RequestOutput> {
         String sql = "UPDATE request_outputs SET validation_date=?,state=? WHERE id=?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             System.out.println(stmt.toString());
+            stmt.setDate(1, this.getValidationDate());
+            stmt.setInt(2, this.getState());
+            stmt.setInt(3, this.getId());
             stmt.executeUpdate();
         }
 
@@ -152,6 +122,8 @@ public class RequestOutput implements Model<RequestOutput> {
     public void setState(int state) {
         this.state = state;
     }
+
+
 
     
 }

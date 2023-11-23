@@ -43,7 +43,7 @@ public class VEntry extends Entry implements ModelDate<VEntry>, ModelView<VEntry
             wasConnected = false;
             connection = getConnection();
         } 
-        String sql = "SELECT * FROM v_entries WHERE article_id=? AND store_id=? ";
+        String sql = "SELECT * FROM v_left_entries WHERE article_id=? AND store_id=? ";
         sql += String.format("ORDER BY date_entry %s", article.getOrder());
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, articleId);

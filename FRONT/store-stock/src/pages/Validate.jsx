@@ -3,44 +3,29 @@ import { useEffect, useState } from "react";
 import API_CONFIG from "../config/apiconfig";
 import Form from "../components/forms/Form";
 
-export default function RequestOutput() {
-
-    const [articles, setArticles] = useState([]);
-    const [stores, setStores] = useState([]);
+export default function Validate() {
+    const [data, setData] = useState([])
     const elements = [
         {
-            "name":"articleId",
-            "label":"Article", 
+            "name":"id",
+            "label":"Demande", 
             "type":"select",
-            "values":articles,
+            "values":data,
         },
         {
-            "name":"storeId",
-            "label":"Magasin",
-            "type":"select",
-            "values":stores,
-        },
-        {
-            "name":"quantity",
-            "label":"Quantité",
-            "type":"number",
+            "name":"validationDate",
+            "label":"Date",
+            "type":"date",
+            "value":new Date().toISOString().split('T')[0]
         }
     ]
 
     useEffect(() => {
-        fetch(API_CONFIG.BASE_URL + API_CONFIG.STORES_API)
-          .then(response => response.json())
-          .then(response => {
-            setStores(response.data)
-          })
-          .catch((error) => console.log(error));
-    }, []);
-
-    useEffect(() => {
-        fetch(API_CONFIG.BASE_URL + API_CONFIG.ARTICLES_FINAL_API)
+        fetch(API_CONFIG.BASE_URL + API_CONFIG.REQUESTS)
             .then(response => response.json())
             .then(response => {
-                setArticles(response.data)
+                setData(response.data)
+                console.log(response.data)
             })
             .catch((error) => console.log(error));
     }, []);
@@ -61,10 +46,11 @@ export default function RequestOutput() {
             headers: { 'Content-type': 'application/json' },
             body: toJson(formData)
         }
-        fetch(API_CONFIG.BASE_URL + API_CONFIG.ADD_OUTPUT ,requestOptions)
+        fetch(API_CONFIG.BASE_URL + API_CONFIG.VALIDATE_REQUEST ,requestOptions)
             .then(response => response.json())
             .then(response => {
-                if (response !== null && response !== '')  alert(response);
+                if (response.error != null && response.error !== '' ) alert(response.error)
+                else                                                  alert("Votre demande a été validé avec succés")
             })
             .catch((error) => console.log(error));
     }

@@ -29,14 +29,19 @@ export default function MySidebar() {
                         Entrée
                     </MenuItem>
                 </Link>
-                <Link to="/output" style={ cssLink }>
+                {/* <Link to="/output" style={ cssLink }>
                     <MenuItem icon={<ReceiptOutlinedIcon />}>
                         Sortie
                     </MenuItem>
-                </Link>
+                </Link> */}
                 <Link to="/request" style={ cssLink }>
                     <MenuItem icon={<ReceiptOutlinedIcon />}>
                         Demande
+                    </MenuItem>
+                </Link>
+                <Link to="/validate" style={ cssLink }>
+                    <MenuItem icon={<ReceiptOutlinedIcon />}>
+                        Validation
                     </MenuItem>
                 </Link>
             </Menu>

@@ -18,8 +18,7 @@ public class StoreController {
         try {
             json.setData(new VStore().findAllByViews(null));
         } catch (Exception e) {
-            System.err.println(e);
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return json;
     }

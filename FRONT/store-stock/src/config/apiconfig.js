@@ -8,7 +8,8 @@ const API_CONFIG = {
     ADD_ENTRY: '/add-entry',
     ADD_OUTPUT: '/add-output',
     ADD_REQUEST: '/add-request',
-    VALIDATE_REQUEST: '/validate-request'
+    VALIDATE_REQUEST: '/validate-request',
+    REQUESTS: '/requests'
 };
 
 
